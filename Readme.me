@@ -1,0 +1,34 @@
+# Rick and Morty App
+
+Aplicacion desarrollada en "Kotlin" como parte del Primer Examen de Desarrollo de Aplicaciones Moviles II.
+
+## Descripcion
+La app consume la "[Rick and Morty API](https://rickandmortyapi.com/)" para mostrar una lista de personajes y sus detalles.
+
+### Funcionalidades:
+- **Pantalla principal**: listado de personajes con nombre e imagen.  
+- **Pantalla de detalles**: al seleccionar un personaje se muestra informacion ampliada (status, species, gender, origin, etc.).  
+- **Manejo de errores**: mensajes en caso de problemas de red o datos vacios.  
+
+## Tecnologias utilizadas
+- Kotlin
+- Android Studio
+- ViewModel + LiveData (para gestion de estado)
+- Retrofit (para consumo de API)
+- Glide (para carga de imagenes)
+
+## Estructura del proyecto
+app/
+ java/com.facundoamoros.rickandmorty/
+  data/ -> Modelos y consumo de API
+   ui/ -> Activities, adapters y logica de UI
+    utils/ -> Clases auxiliares y manejo de errores
+ res/ -> Layouts y recursos graficos
+build.gradle
+
+
+##Video demostracion
+"file:///Users/facundoamoros/Downloads/GrabacionAppRickAndMorty.webm"
+
+## Creador de la App
+Facundo Amoros
