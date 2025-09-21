@@ -8,18 +8,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-// ViewModel para manejar los datos de los personajes y el estado de la UI
+// ViewModel to handle character data and UI state
 class CharacterViewModel : ViewModel() {
 
-    // Lista de personajes
+    // List of characters
     private val _characters = MutableStateFlow<List<Character>>(emptyList())
     val characters: StateFlow<List<Character>> = _characters
 
-    // Mensaje de error
+    // Error message
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    // Estado de carga
+    // Loading status
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading
 
