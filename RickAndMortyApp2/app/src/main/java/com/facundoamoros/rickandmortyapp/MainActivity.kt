@@ -32,12 +32,13 @@ import androidx.navigation.navArgument
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 
+// Initialize main activity and set up Compose theme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            RickAndMortyAppTheme {
-                MainScreenWrapper()
+            RickAndMortyAppTheme { //Apply custom app theme
+                MainScreenWrapper() //Initialize navigation wrapper
             }
         }
     }
@@ -46,21 +47,24 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreenWrapper() {
-    val navController = rememberNavController()
+    val navController = rememberNavController() //Set up navigation controller
 
+    //Implement navigation between main screen and detail screen
     NavHost(navController = navController, startDestination = "main") {
-        composable("main") { MainScreen(navController) }
+        composable("main") { MainScreen(navController) } //Main screen route
         composable(
             route = "detail/{characterJson}",
             arguments = listOf(navArgument("characterJson") { type = NavType.StringType })
         ) { backStackEntry ->
             val json = backStackEntry.arguments?.getString("characterJson")
             val character = Gson().fromJson(json, Character::class.java)
-            CharacterDetailScreen(character) { navController.popBackStack() }
+            CharacterDetailScreen(character) { navController.popBackStack() } //Detail screen route
         }
     }
 }
 
+
+//Add MainScreen composable with state handling and error display
 @Composable
 fun MainScreen(navController: androidx.navigation.NavHostController, modifier: Modifier = Modifier) {
     val viewModel: CharacterViewModel = viewModel()
@@ -83,7 +87,7 @@ fun MainScreen(navController: androidx.navigation.NavHostController, modifier: M
             isLoading -> Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
-            ) { CircularProgressIndicator() }
+            ) { CircularProgressIndicator() } //Show loading indicator
 
             !error.isNullOrEmpty() -> Box(
                 modifier = Modifier.fillMaxSize(),
@@ -92,17 +96,18 @@ fun MainScreen(navController: androidx.navigation.NavHostController, modifier: M
                 Text(text = error!!, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(16.dp))
             }
 
-            else -> CharacterList(characters, navController)
+            else -> CharacterList(characters, navController) //Show list of characters
         }
     }
 }
 
+//Implement character list and clickable items
 @Composable
 fun CharacterList(characters: List<Character>, navController: androidx.navigation.NavHostController) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(characters) { character ->
-            CharacterItem(character, navController)
-            Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
+            CharacterItem(character, navController) //Individual character item
+            Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)) //Visual separation between items
         }
     }
 }
@@ -115,7 +120,7 @@ fun CharacterItem(character: Character, navController: androidx.navigation.NavHo
             .padding(8.dp)
             .clickable {
                 val json = Uri.encode(Gson().toJson(character))
-                navController.navigate("detail/$json")
+                navController.navigate("detail/$json") //Navigate to detail screen on click
             },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -128,6 +133,8 @@ fun CharacterItem(character: Character, navController: androidx.navigation.NavHo
     }
 }
 
+
+//Create CharacterDetailScreen with top bar and scrollable content
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharacterDetailScreen(character: Character, onBack: () -> Unit) {
@@ -152,16 +159,16 @@ fun CharacterDetailScreen(character: Character, onBack: () -> Unit) {
                     .fillMaxWidth()
                     .height(300.dp),
                 shape = MaterialTheme.shapes.medium,
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp) // CORREGIDO
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp) //Card elevation
             ) {
-                AsyncImage(model = character.image, contentDescription = character.name, modifier = Modifier.fillMaxSize())
+                AsyncImage(model = character.image, contentDescription = character.name, modifier = Modifier.fillMaxSize()) //Show character image
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shadowElevation = 4.dp, // CORREGIDO
+                shadowElevation = 4.dp, //Add shadow to info card
                 shape = MaterialTheme.shapes.medium
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
